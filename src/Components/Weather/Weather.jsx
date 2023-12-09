@@ -5,21 +5,29 @@ import axios from 'axios'
 
 export default function Weather() {
   let [response, setResponse] = useState()
+  let [name, setName] = useState()
+  let [cities, setCities] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       console.log('Fetching data')
       try {
-        let res = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=-34.6131&longitude=-58.3772&current=temperature_2m,precipitation&minutely_15=temperature_2m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`);
-        console.log(res);
+        let res2 = await axios.get(`https://geocoding-api.open-meteo.com/v1/search?name=Miami&count=1&language=en&format=json`)
+        console.log(res2);
+       
+        let res = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${res2.data.results[0].latitude}&longitude=${res2.data.results[0].longitude}&current=temperature_2m,precipitation&minutely_15=temperature_2m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`);
+        console.log(res)
         setResponse(res.data);
+        setName(res2.data.results[0].name)
       } catch (error) {
         console.error('Error en la solicitud:', error);
       }
     }
     fetchData();
-    console.log('hola')
+    
   }, [])
+
+  console.log(response)
 
   let maxTemp, minTemp;
 
@@ -53,13 +61,9 @@ export default function Weather() {
     maxTemp = maxTempArr[maxTempArr.length - 1]
     minTemp = minTempArr[0]
 
-    let timezone = response.timezone.split('/')
-    let place = timezone[timezone.length - 1]
-    place = place.replace('_', ' ')
-
     return (
       <div>
-        <h2>El clima de {place} es:</h2>
+        <h2>El clima de {name} es:</h2>
         <p>Temperatura: {response.current.temperature_2m} {response.current_units.temperature_2m}</p>
         <p>Precipitaciones: {response.current.precipitation} {response.current_units.precipitation}</p>
         <p>Temperatura mínima: {minTemp} {response.daily_units.temperature_2m_min}</p>
