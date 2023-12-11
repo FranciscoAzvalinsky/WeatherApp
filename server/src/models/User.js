@@ -30,23 +30,9 @@ module.exports = (sequelize) => {
         allowNull: true,
         unique: true, // To ensure each email is unique
       },
-        roll: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
       password: {
         type: DataTypes.STRING,
         allowNull: true,
-      },
-
-      creationDate: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW, 
-        allowNull: true,
-      },
-      deleted: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
       },
     },
     {
