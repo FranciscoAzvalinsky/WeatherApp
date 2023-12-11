@@ -5,7 +5,6 @@ import axios from 'axios'
 
 export default function Weather() {
   let [response, setResponse] = useState()
-  //let [name, setName] = useState()
   let [provincia, setProvincia] = useState('Buenos+Aires')
   let [city, setCity] = useState({name: '25+de+Mayo', lat:'-35.527', lon:'-60.230'});
   let [provincias, setProvincias] = useState([])
@@ -62,6 +61,9 @@ export default function Weather() {
   let maxTempArr = []
   let minTempArr = []
   let aux
+
+  console.log(`city`)
+  console.log(city)
 
   if (response) {
     minTempArr = response.daily.temperature_2m_min
@@ -120,8 +122,6 @@ export default function Weather() {
       </option>
     )})
 
-    var muni = municipios[0]
-
     provincias.sort(function (a, b) {
       if (a.nombre > b.nombre) {
         return 1;
@@ -150,7 +150,7 @@ export default function Weather() {
     return (
       <div>
         <div>
-          <h2>El clima de {muni.nombre.replaceAll('+', ' ')} es:</h2>
+          <h2>El clima de {city.name.replaceAll('+', ' ')} es:</h2>
           <p>Temperatura: {response.current.temperature_2m} {response.current_units.temperature_2m}</p>
           <p>Precipitaciones: {response.current.precipitation} {response.current_units.precipitation}</p>
           <p>Temperatura mínima: {minTemp} {response.daily_units.temperature_2m_min}</p>
