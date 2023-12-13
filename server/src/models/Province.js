@@ -9,21 +9,21 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
+      provId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       name: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       lat: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.FLOAT,
+        allowNull: false,
       },
       lon: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-      cantMun: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.FLOAT,
+        allowNull: false,
       },
     },
     {

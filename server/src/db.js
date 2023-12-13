@@ -2,7 +2,7 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const { PassThrough } = require("stream");
+
 const {
     DB_USER, DB_PASSWORD, DB_HOST, DDB
   } = process.env;

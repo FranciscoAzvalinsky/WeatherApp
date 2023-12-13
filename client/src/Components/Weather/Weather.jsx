@@ -3,57 +3,70 @@ import style from './Weather.module.css'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export default function Weather() {
+export default function Weather({provincias}) {
   let [response, setResponse] = useState()
   let [provincia, setProvincia] = useState('Buenos+Aires')
-  let [city, setCity] = useState({name: '25+de+Mayo', lat:'-35.527', lon:'-60.230'});
-  let [provincias, setProvincias] = useState([])
+  let [name, setName] = useState('25+de+Mayo')
+  let [city, setCity] = useState({lat:'-35.527', lon:'-60.230'});
   let [municipios, setMunicipios] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      
+    const fetchClimateData = async () => {
       try {
-        //Se obtienen todas las provincias de Argentina
-        let provs = await axios.get('https://apis.datos.gob.ar/georef/api/provincias')
-        setProvincias(provs.data.provincias);
-
-        //Se obtiene el id de la provincia deseada
-        let prov = provincia.replaceAll('+', ' ')
-        let provNameId= await axios.get(`https://apis.datos.gob.ar/georef/api/provincias?nombre=${prov}`)
-        console.log('provNameAndId:')
-        console.log(provNameId)
-        let id = provNameId.data.provincias[0].id
-
-        //Se obtienen todos los municipios de esa provincia
-        let Municipios= await axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre,centroide&max=1000`)
-        setMunicipios(Municipios.data.municipios)
-        console.log('Municipios:')
-        console.log(Municipios.data);
-
-        //Se obtiene el clima del municipio deseado
         let cityClimate = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,precipitation&minutely_15=temperature_2m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`);
         console.log('cityClimate:')
         console.log(cityClimate.data)
         setResponse(cityClimate.data);
-        
+      } catch (error) {
+        console.error('Error en la solicitud:', error)
+      }
+    }
+    fetchClimateData();
+  }, [city])
+
+  useEffect(() => {
+    const fetchProvinceData = async () => {
+      try {
+        //Se obtiene el id de la provincia deseada
+        let prov = provincia.replaceAll('+', ' ')
+        let provNameId= await axios.get(`https://apis.datos.gob.ar/georef/api/provincias?nombre=${prov}`)
+        let id = provNameId.data.provincias[0].id
+
+        //Se obtienen todos los municipios de esa provincia
+        var Municipios = await axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${id}&campos=id,nombre,centroide&max=1000`)
+        let sortedMunicipios = Municipios.data.municipios.sort(function (a, b) {
+          if (a.nombre > b.nombre) {
+            return 1;
+          }
+          if (a.nombre < b.nombre) {
+            return -1;
+          }
+          return 0;
+        })
+        setMunicipios(sortedMunicipios)
+        setName(sortedMunicipios[0].nombre)
+
+        //Se obtiene el clima del municipio deseado
+        let cityClimate = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${sortedMunicipios[0].centroide.lat}&longitude=${sortedMunicipios[0].centroide.lon}&current=temperature_2m,precipitation&minutely_15=temperature_2m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`);
+        console.log('cityClimate:')
+        console.log(cityClimate.data)
+        setResponse(cityClimate.data);
       } catch (error) {
         console.error('Error en la solicitud:', error);
       }
     }
-    fetchData();
-
-  }, [city, provincia])
+    fetchProvinceData();
+  }, [provincia])
 
   const setCiudad = (e) => {
     const selectedOption = JSON.parse(e.target.value)
     const { name, lat, lon } = selectedOption;
-    setCity({ name, lat, lon });
+    setCity({lat, lon });
+    setName(name);
   };
 
   const setProvince = (e) => {
     setProvincia(e.target.value)
-    setCity({name: muni.nombre, lon: muni.centroide.lon, lat: muni.centroide.lat})
   }
 
   let maxTemp, minTemp;
@@ -61,9 +74,6 @@ export default function Weather() {
   let maxTempArr = []
   let minTempArr = []
   let aux
-
-  console.log(`city`)
-  console.log(city)
 
   if (response) {
     minTempArr = response.daily.temperature_2m_min
@@ -91,19 +101,6 @@ export default function Weather() {
     maxTemp = maxTempArr[maxTempArr.length - 1]
     minTemp = minTempArr[0]
 
-    municipios.sort(function (a, b) {
-      if (a.nombre > b.nombre) {
-        return 1;
-      }
-      if (a.nombre < b.nombre) {
-        return -1;
-      }
-      // a must be equal to b
-      return 0;
-    });
-
-
-
     let municipiosOrdered = municipios.map((municipio, index) => {
       
       let name=municipio.nombre.replaceAll(' ', '+')
@@ -123,25 +120,24 @@ export default function Weather() {
     )})
 
     provincias.sort(function (a, b) {
-      if (a.nombre > b.nombre) {
+      if (a.name > b.name) {
         return 1;
       }
-      if (a.nombre < b.nombre) {
+      if (a.name < b.name) {
         return -1;
       }
-      // a must be equal to b
       return 0;
     });
 
     let provinciasOrdered = provincias.map((provincia, index) => {
 
-      if (provincia.nombre ==='Santa Cruz' || provincia.nombre === 'Santiago del Estero'){
+      if (provincia.name ==='Santa Cruz' || provincia.name === 'Santiago del Estero'){
         return 
       } else {
-        let name=provincia.nombre.replaceAll(' ', '+')
+        let name=provincia.name.replaceAll(' ', '+')
         return (
           <option value={name} key={index}>
-            {provincia.nombre}
+            {provincia.name}
           </option>
         )
       }
@@ -150,7 +146,7 @@ export default function Weather() {
     return (
       <div>
         <div>
-          <h2>El clima de {city.name.replaceAll('+', ' ')} es:</h2>
+          <h2>El clima de {name.replaceAll('+', ' ')} es:</h2>
           <p>Temperatura: {response.current.temperature_2m} {response.current_units.temperature_2m}</p>
           <p>Precipitaciones: {response.current.precipitation} {response.current_units.precipitation}</p>
           <p>Temperatura mínima: {minTemp} {response.daily_units.temperature_2m_min}</p>
@@ -165,7 +161,7 @@ export default function Weather() {
           </select>
 
           <p>Selecciona una localidad</p>
-          <select onChange={setCiudad}>
+          <select onChange={setCiudad} defaultValue = {municipios[0].nombre}>
             {municipiosOrdered}
           </select>
         </div>
