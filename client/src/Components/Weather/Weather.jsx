@@ -3,11 +3,11 @@ import style from './Weather.module.css'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export default function Weather({provincias}) {
+export default function Weather({ provincias }) {
   let [response, setResponse] = useState()
   let [provincia, setProvincia] = useState('Buenos+Aires')
   let [name, setName] = useState('25+de+Mayo')
-  let [city, setCity] = useState({lat:'-35.527', lon:'-60.230'});
+  let [city, setCity] = useState({ lat: '-35.527', lon: '-60.230' });
   let [municipios, setMunicipios] = useState([]);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function Weather({provincias}) {
       try {
         //Se obtiene el id de la provincia deseada
         let prov = provincia.replaceAll('+', ' ')
-        let provNameId= await axios.get(`https://apis.datos.gob.ar/georef/api/provincias?nombre=${prov}`)
+        let provNameId = await axios.get(`https://apis.datos.gob.ar/georef/api/provincias?nombre=${prov}`)
         let id = provNameId.data.provincias[0].id
 
         //Se obtienen todos los municipios de esa provincia
@@ -61,7 +61,7 @@ export default function Weather({provincias}) {
   const setCiudad = (e) => {
     const selectedOption = JSON.parse(e.target.value)
     const { name, lat, lon } = selectedOption;
-    setCity({lat, lon });
+    setCity({ lat, lon });
     setName(name);
   };
 
@@ -102,8 +102,8 @@ export default function Weather({provincias}) {
     minTemp = minTempArr[0]
 
     let municipiosOrdered = municipios.map((municipio, index) => {
-      
-      let name=municipio.nombre.replaceAll(' ', '+')
+
+      let name = municipio.nombre.replaceAll(' ', '+')
       let lon = parseFloat(municipio.centroide.lon.toFixed(3));
       let lat = parseFloat(municipio.centroide.lat.toFixed(3));
 
@@ -114,10 +114,11 @@ export default function Weather({provincias}) {
       });
 
       return (
-      <option value={value} key={index}>
-        {municipio.nombre}
-      </option>
-    )})
+        <option value={value} key={index}>
+          {municipio.nombre}
+        </option>
+      )
+    })
 
     provincias.sort(function (a, b) {
       if (a.name > b.name) {
@@ -131,39 +132,42 @@ export default function Weather({provincias}) {
 
     let provinciasOrdered = provincias.map((provincia, index) => {
 
-      if (provincia.name ==='Santa Cruz' || provincia.name === 'Santiago del Estero'){
-        return 
+      if (provincia.name === 'Santa Cruz' || provincia.name === 'Santiago del Estero') {
+        return
       } else {
-        let name=provincia.name.replaceAll(' ', '+')
+        let name = provincia.name.replaceAll(' ', '+')
         return (
           <option value={name} key={index}>
             {provincia.name}
           </option>
         )
       }
-      })
+    })
 
     return (
-      <div>
+      <div className={style.firstDiv}>
         <div>
-          <h2>El clima de {name.replaceAll('+', ' ')} es:</h2>
-          <p>Temperatura: {response.current.temperature_2m} {response.current_units.temperature_2m}</p>
-          <p>Precipitaciones: {response.current.precipitation} {response.current_units.precipitation}</p>
-          <p>Temperatura mínima: {minTemp} {response.daily_units.temperature_2m_min}</p>
-          <p>Temperatura máxima: {maxTemp} {response.daily_units.temperature_2m_max}</p>
-          <p>Amanecer: {response.daily.sunrise[0].slice(11)}</p>
-          <p>Atardecer: {response.daily.sunset[0].slice(11)}</p>
+          <h2>{name.replaceAll('+', ' ')}</h2>
+          <div>
+            <p>Temperatura: {response.current.temperature_2m} {response.current_units.temperature_2m}</p>
+            <p>Precipitaciones: {response.current.precipitation} {response.current_units.precipitation}</p>
+            <p>Temperatura mínima: {minTemp} {response.daily_units.temperature_2m_min}</p>
+            <p>Temperatura máxima: {maxTemp} {response.daily_units.temperature_2m_max}</p>
+            <p>Amanecer: {response.daily.sunrise[0].slice(11)}</p>
+            <p>Atardecer: {response.daily.sunset[0].slice(11)}</p>
+          </div>
         </div>
         <div>
-          <p>Selecciona una provincia</p>
-          <select onChange={setProvince}>
-            {provinciasOrdered}
-          </select>
-
-          <p>Selecciona una localidad</p>
-          <select onChange={setCiudad} defaultValue = {municipios[0].nombre}>
-            {municipiosOrdered}
-          </select>
+          <div>
+            <p>Selecciona una provincia</p>
+            <select onChange={setProvince}>
+              {provinciasOrdered}
+            </select>
+            <p>Selecciona una localidad</p>
+            <select onChange={setCiudad} defaultValue={municipios[0].nombre}>
+              {municipiosOrdered}
+            </select>
+          </div>
         </div>
       </div>
     )

@@ -22,8 +22,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path = '/' element = {<Gotoweather/>}></Route>
-        <Route path='/Weather' element = {<Weather provincias={provincias}/>}></Route>
+        <Route path='/' element = {<Weather provincias={provincias}/>}></Route>
       </Routes>
     </div>
   );

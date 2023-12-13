@@ -1,0 +1,57 @@
+.firstDiv{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(8, 8, 61);
+    color: rgb(206, 205, 205);
+    align-items: center;
+    align-content: center;
+    height: 941px
+}
+
+.firstDiv div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    margin-bottom: 70px;
+}
+
+.firstDiv div h2{
+    font-size: 36px;
+    font-weight: bolder;
+    font-style:italic;
+}
+
+.firstDiv div div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    background-color: rgb(2, 2, 32);
+    border-radius: 10px;
+    width: 350px;
+}
+
+.firstDiv div div p {
+    font-size: 20px;
+    font-weight: light;
+    font-style: normal;
+}
+
+.firstDiv div select {
+    height: 24px;
+    border-radius: 3px;
+    width: auto;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: light;
+    font-style: normal;
+}
+.firstDiv div select option {
+    font-size: 13px;
+    font-weight: light;
+    font-style: normal;
+    border-radius: 15px;
+}
