@@ -13,7 +13,7 @@ export default function Weather({ provincias }) {
   useEffect(() => {
     const fetchClimateData = async () => {
       try {
-        let cityClimate = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,precipitation&minutely_15=temperature_2m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`);
+        let cityClimate = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,precipitation&minutely_15=temperature_2m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,rain_sum,precipitation_probability_max&timezone=auto`);
         console.log('cityClimate:')
         console.log(cityClimate.data)
         setResponse(cityClimate.data);
@@ -47,7 +47,7 @@ export default function Weather({ provincias }) {
         setName(sortedMunicipios[0].nombre)
 
         //Se obtiene el clima del municipio deseado
-        let cityClimate = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${sortedMunicipios[0].centroide.lat}&longitude=${sortedMunicipios[0].centroide.lon}&current=temperature_2m,precipitation&minutely_15=temperature_2m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto`);
+        let cityClimate = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${sortedMunicipios[0].centroide.lat}&longitude=${sortedMunicipios[0].centroide.lon}&current=temperature_2m,precipitation&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,rain_sum,precipitation_probability_max&timezone=auto`);
         console.log('cityClimate:')
         console.log(cityClimate.data)
         setResponse(cityClimate.data);
@@ -145,28 +145,82 @@ export default function Weather({ provincias }) {
     })
 
     return (
-      <div className={style.firstDiv}>
-        <div>
-          <h2>{name.replaceAll('+', ' ')}</h2>
-          <div>
-            <p>Temperatura: {response.current.temperature_2m} {response.current_units.temperature_2m}</p>
-            <p>Precipitaciones: {response.current.precipitation} {response.current_units.precipitation}</p>
-            <p>Temperatura mínima: {minTemp} {response.daily_units.temperature_2m_min}</p>
-            <p>Temperatura máxima: {maxTemp} {response.daily_units.temperature_2m_max}</p>
-            <p>Amanecer: {response.daily.sunrise[0].slice(11)}</p>
-            <p>Atardecer: {response.daily.sunset[0].slice(11)}</p>
-          </div>
-        </div>
-        <div>
-          <div>
+      <div className={style.gridContainer}>
+        <div className={style.item1}>
             <p>Selecciona una provincia</p>
             <select onChange={setProvince}>
               {provinciasOrdered}
             </select>
+            <hr style={{opacity: 0}}></hr>
+            <hr style={{opacity: 0}}></hr>
             <p>Selecciona una localidad</p>
             <select onChange={setCiudad} defaultValue={municipios[0].nombre}>
               {municipiosOrdered}
             </select>
+          </div>
+        <div className={style.item2}>
+          <h2>{name.replaceAll('+', ' ')}</h2>
+          <div className={style.item2Text}>
+            <p>Temperatura <hr style={{opacity: 0.7}}></hr> {response.current.temperature_2m} {response.current_units.temperature_2m}</p>
+            <p>Precipitaciones <hr style={{opacity: 0.7}}></hr>{response.current.precipitation} {response.current_units.precipitation}</p>
+            <p>Temperatura mínima <hr style={{opacity: 0.7}}></hr>{minTemp} {response.daily_units.temperature_2m_min}</p>
+            <p>Temperatura máxima <hr style={{opacity: 0.7}}></hr>{maxTemp} {response.daily_units.temperature_2m_max}</p>
+            <p>Amanecer <hr style={{opacity: 0.7}}></hr>{response.daily.sunrise[0].slice(11)}</p>
+            <p>Atardecer <hr style={{opacity: 0.7}}></hr>{response.daily.sunset[0].slice(11)}</p>
+          </div>
+        </div>
+        <button className={style.botonPronostico}>
+          <strong>Pronóstico de 5 días</strong>
+        </button>
+        <div className={style.item3}>
+          <div className={style.day1}>
+            <p>1</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Precipitaciones <hr style={{opacity: 0}}></hr> {response.daily.precipitation_probability_max[1]} {response.daily_units.precipitation_probability_max}</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Temperatura mínima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_min[1]} {response.daily_units.temperature_2m_min}</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Temperatura máxima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_max[1]} {response.daily_units.temperature_2m_max}</p>
+            
+          </div>
+          <div className={style.day2}>
+            <p>2</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Precipitaciones <hr style={{opacity: 0}}></hr> {response.daily.precipitation_probability_max[2]} {response.daily_units.precipitation_probability_max}</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Temperatura mínima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_min[2]} {response.daily_units.temperature_2m_min}</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Temperatura máxima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_max[2]} {response.daily_units.temperature_2m_max}</p>
+            
+          </div>
+          <div className={style.day3}>
+            <p>3</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Precipitaciones <hr style={{opacity: 0}}></hr> {response.daily.precipitation_probability_max[3]} {response.daily_units.precipitation_probability_max}</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Temperatura mínima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_min[3]} {response.daily_units.temperature_2m_min}</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Temperatura máxima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_max[3]} {response.daily_units.temperature_2m_max}</p>
+          </div>
+          <div className={style.day4}>
+            <p>4</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Precipitaciones <hr style={{opacity: 0}}></hr> {response.daily.precipitation_probability_max[4]} {response.daily_units.precipitation_probability_max}</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Temperatura mínima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_min[4]} {response.daily_units.temperature_2m_min}</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Temperatura máxima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_max[4]} {response.daily_units.temperature_2m_max}</p>
+            
+          </div>
+          <div className={style.day5}>
+            <p>5</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Precipitaciones <hr style={{opacity: 0}}></hr> {response.daily.precipitation_probability_max[5]} {response.daily_units.precipitation_probability_max}</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Temperatura mínima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_min[5]} {response.daily_units.temperature_2m_min}</p>
+            <hr style={{opacity: 0.7}}></hr>
+            <p>Temperatura máxima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_max[5]} {response.daily_units.temperature_2m_max}</p>
+            
           </div>
         </div>
       </div>

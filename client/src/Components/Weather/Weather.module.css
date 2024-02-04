@@ -1,46 +1,71 @@
-.firstDiv{
-    display: flex;
-    flex-direction: column;
+.gridContainer{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto auto;
     background-color: rgb(8, 8, 61);
     color: rgb(206, 205, 205);
     align-items: center;
-    align-content: center;
-    height: 941px
+    height: 927px
 }
 
-.firstDiv div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    margin-bottom: 70px;
-}
-
-.firstDiv div h2{
-    font-size: 36px;
-    font-weight: bolder;
-    font-style:italic;
-}
-
-.firstDiv div div {
-    display: flex;
-    flex-direction: column;
+.item1 {
+    grid-area: 1/2/2/3;
     align-items: center;
     align-content: center;
     justify-content: center;
     background-color: rgb(2, 2, 32);
     border-radius: 10px;
     width: 350px;
+    height: 65%;
+    margin-bottom: 65px;
 }
 
-.firstDiv div div p {
-    font-size: 20px;
+.item2 {
+
+    grid-area: 1/4/2/10;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    margin-bottom: 70px;
+    background-color: rgb(2, 2, 32);
+    border-radius: 10px;
+    margin-right: 15px;
+}
+
+.item3{
+    grid-area: 3/2/4/10;
+    display:grid;
+    grid-template-columns: 7;
+    grid-template-rows: 3;
+    grid-auto-flow: column;
+    justify-items: auto;
+    align-items: auto;
+    background-color: rgb(2, 2, 32);
+}
+
+.item2Text {
+    display:grid;
+    grid-template-columns: 7;
+    grid-template-rows: 3;
+    grid-auto-flow: column;
+    justify-items: auto;
+    align-items: auto;
+
+}
+.item2Text p {
+    font-size: 18px;
     font-weight: light;
     font-style: normal;
 }
 
-.firstDiv div select {
+.item2 h2{
+    font-size: 36px;
+    font-weight: bolder;
+    font-style:italic;
+}
+
+
+.item2 select {
     height: 24px;
     border-radius: 3px;
     width: auto;
@@ -49,9 +74,22 @@
     font-weight: light;
     font-style: normal;
 }
-.firstDiv div select option {
+.item2 select option {
     font-size: 13px;
     font-weight: light;
     font-style: normal;
     border-radius: 15px;
+}
+
+.botonPronostico{
+    width: 240px;
+    height: 30px;
+    font-size: 18px;
+    grid-row: 2/3;
+    grid-column: 5/6;
+    margin-left: 60px;
+    border-radius: 6px;
+    color: white;
+    background-color: rgb(2, 2, 32);
+    border: 1px solid rgb(2, 2, 32);
 }
