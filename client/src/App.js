@@ -3,7 +3,6 @@ import axios from 'axios'
 import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import Weather from './Components/Weather/Weather';
-import Gotoweather from './Components/Gotoweather/Gotoweather';
 
 function App() {
 

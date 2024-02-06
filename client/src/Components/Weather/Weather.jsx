@@ -3,6 +3,10 @@ import style from './Weather.module.css'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
+import Days from '../Days/Days'
+import CityToday from '../CityToday/CityToday'
+import CitySelector from '../CitySelector/CitySelector'
+
 export default function Weather({ provincias }) {
   let [response, setResponse] = useState()
   let [provincia, setProvincia] = useState('Buenos+Aires')
@@ -146,82 +150,17 @@ export default function Weather({ provincias }) {
 
     return (
       <div className={style.gridContainer}>
-        <div className={style.item1}>
-            <p>Selecciona una provincia</p>
-            <select onChange={setProvince}>
-              {provinciasOrdered}
-            </select>
-            <hr style={{opacity: 0}}></hr>
-            <hr style={{opacity: 0}}></hr>
-            <p>Selecciona una localidad</p>
-            <select onChange={setCiudad} defaultValue={municipios[0].nombre}>
-              {municipiosOrdered}
-            </select>
-          </div>
-        <div className={style.item2}>
-          <h2>{name.replaceAll('+', ' ')}</h2>
-          <div className={style.item2Text}>
-            <p>Temperatura <hr style={{opacity: 0.7}}></hr> {response.current.temperature_2m} {response.current_units.temperature_2m}</p>
-            <p>Precipitaciones <hr style={{opacity: 0.7}}></hr>{response.current.precipitation} {response.current_units.precipitation}</p>
-            <p>Temperatura mínima <hr style={{opacity: 0.7}}></hr>{minTemp} {response.daily_units.temperature_2m_min}</p>
-            <p>Temperatura máxima <hr style={{opacity: 0.7}}></hr>{maxTemp} {response.daily_units.temperature_2m_max}</p>
-            <p>Amanecer <hr style={{opacity: 0.7}}></hr>{response.daily.sunrise[0].slice(11)}</p>
-            <p>Atardecer <hr style={{opacity: 0.7}}></hr>{response.daily.sunset[0].slice(11)}</p>
-          </div>
-        </div>
+        <CitySelector setProvince={setProvince} provinciasOrdered={provinciasOrdered} setCiudad={setCiudad} nombre={municipios[0].nombre} municipiosOrdered={municipiosOrdered}/>
+        <CityToday num={response.daily.time[0]} name={name.replaceAll('+', ' ')} temp={response.current.temperature_2m} precipitation={response.current.precipitation} minTemp={minTemp} maxTemp={maxTemp} sunrise={response.daily.sunrise[0].slice(11)} sunset={response.daily.sunset[0].slice(11)}/>
         <button className={style.botonPronostico}>
           <strong>Pronóstico de 5 días</strong>
         </button>
         <div className={style.item3}>
-          <div className={style.day1}>
-            <p>1</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Precipitaciones <hr style={{opacity: 0}}></hr> {response.daily.precipitation_probability_max[1]} {response.daily_units.precipitation_probability_max}</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Temperatura mínima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_min[1]} {response.daily_units.temperature_2m_min}</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Temperatura máxima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_max[1]} {response.daily_units.temperature_2m_max}</p>
-            
-          </div>
-          <div className={style.day2}>
-            <p>2</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Precipitaciones <hr style={{opacity: 0}}></hr> {response.daily.precipitation_probability_max[2]} {response.daily_units.precipitation_probability_max}</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Temperatura mínima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_min[2]} {response.daily_units.temperature_2m_min}</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Temperatura máxima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_max[2]} {response.daily_units.temperature_2m_max}</p>
-            
-          </div>
-          <div className={style.day3}>
-            <p>3</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Precipitaciones <hr style={{opacity: 0}}></hr> {response.daily.precipitation_probability_max[3]} {response.daily_units.precipitation_probability_max}</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Temperatura mínima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_min[3]} {response.daily_units.temperature_2m_min}</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Temperatura máxima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_max[3]} {response.daily_units.temperature_2m_max}</p>
-          </div>
-          <div className={style.day4}>
-            <p>4</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Precipitaciones <hr style={{opacity: 0}}></hr> {response.daily.precipitation_probability_max[4]} {response.daily_units.precipitation_probability_max}</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Temperatura mínima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_min[4]} {response.daily_units.temperature_2m_min}</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Temperatura máxima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_max[4]} {response.daily_units.temperature_2m_max}</p>
-            
-          </div>
-          <div className={style.day5}>
-            <p>5</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Precipitaciones <hr style={{opacity: 0}}></hr> {response.daily.precipitation_probability_max[5]} {response.daily_units.precipitation_probability_max}</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Temperatura mínima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_min[5]} {response.daily_units.temperature_2m_min}</p>
-            <hr style={{opacity: 0.7}}></hr>
-            <p>Temperatura máxima <hr style={{opacity: 0}}></hr>{response.daily.temperature_2m_max[5]} {response.daily_units.temperature_2m_max}</p>
-            
-          </div>
+          <Days maxPrecipitation={response.daily.precipitation_probability_max[1]} minTemp={response.daily.temperature_2m_min[1]} maxTemp={response.daily.temperature_2m_max[1]} num={response.daily.time[1]}/>
+          <Days maxPrecipitation={response.daily.precipitation_probability_max[2]} minTemp={response.daily.temperature_2m_min[2]} maxTemp={response.daily.temperature_2m_max[2]} num={response.daily.time[2]}/>
+          <Days maxPrecipitation={response.daily.precipitation_probability_max[3]} minTemp={response.daily.temperature_2m_min[3]} maxTemp={response.daily.temperature_2m_max[3]} num={response.daily.time[3]}/>
+          <Days maxPrecipitation={response.daily.precipitation_probability_max[4]} minTemp={response.daily.temperature_2m_min[4]} maxTemp={response.daily.temperature_2m_max[4]} num={response.daily.time[4]}/>
+          <Days maxPrecipitation={response.daily.precipitation_probability_max[5]} minTemp={response.daily.temperature_2m_min[5]} maxTemp={response.daily.temperature_2m_max[5]} num={response.daily.time[5]}/>
         </div>
       </div>
     )

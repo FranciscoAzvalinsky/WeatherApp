@@ -8,30 +8,6 @@
     height: 927px
 }
 
-.item1 {
-    grid-area: 1/2/2/3;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    background-color: rgb(2, 2, 32);
-    border-radius: 10px;
-    width: 350px;
-    height: 65%;
-    margin-bottom: 65px;
-}
-
-.item2 {
-
-    grid-area: 1/4/2/10;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    margin-bottom: 70px;
-    background-color: rgb(2, 2, 32);
-    border-radius: 10px;
-    margin-right: 15px;
-}
-
 .item3{
     grid-area: 3/2/4/10;
     display:grid;
@@ -41,44 +17,6 @@
     justify-items: auto;
     align-items: auto;
     background-color: rgb(2, 2, 32);
-}
-
-.item2Text {
-    display:grid;
-    grid-template-columns: 7;
-    grid-template-rows: 3;
-    grid-auto-flow: column;
-    justify-items: auto;
-    align-items: auto;
-
-}
-.item2Text p {
-    font-size: 18px;
-    font-weight: light;
-    font-style: normal;
-}
-
-.item2 h2{
-    font-size: 36px;
-    font-weight: bolder;
-    font-style:italic;
-}
-
-
-.item2 select {
-    height: 24px;
-    border-radius: 3px;
-    width: auto;
-    margin-bottom: 10px;
-    font-size: 13px;
-    font-weight: light;
-    font-style: normal;
-}
-.item2 select option {
-    font-size: 13px;
-    font-weight: light;
-    font-style: normal;
-    border-radius: 15px;
 }
 
 .botonPronostico{
