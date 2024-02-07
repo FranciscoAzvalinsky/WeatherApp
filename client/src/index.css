@@ -5,7 +5,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url('../Climate-Weather-Blue-Clouds-1280px.jpg');
+  background-repeat:no-repeat;
+  background-size: 100%;
 }
+
+/*@font-face {
+  font-family: ;
+  src: url();
+}*/
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

@@ -156,11 +156,11 @@ export default function Weather({ provincias }) {
           <strong>Pronóstico de 5 días</strong>
         </button>
         <div className={style.item3}>
-          <Days maxPrecipitation={response.daily.precipitation_probability_max[1]} minTemp={response.daily.temperature_2m_min[1]} maxTemp={response.daily.temperature_2m_max[1]} num={response.daily.time[1]}/>
-          <Days maxPrecipitation={response.daily.precipitation_probability_max[2]} minTemp={response.daily.temperature_2m_min[2]} maxTemp={response.daily.temperature_2m_max[2]} num={response.daily.time[2]}/>
-          <Days maxPrecipitation={response.daily.precipitation_probability_max[3]} minTemp={response.daily.temperature_2m_min[3]} maxTemp={response.daily.temperature_2m_max[3]} num={response.daily.time[3]}/>
-          <Days maxPrecipitation={response.daily.precipitation_probability_max[4]} minTemp={response.daily.temperature_2m_min[4]} maxTemp={response.daily.temperature_2m_max[4]} num={response.daily.time[4]}/>
-          <Days maxPrecipitation={response.daily.precipitation_probability_max[5]} minTemp={response.daily.temperature_2m_min[5]} maxTemp={response.daily.temperature_2m_max[5]} num={response.daily.time[5]}/>
+          <Days maxPrecipitation={response.daily.precipitation_probability_max[1]} minTemp={response.daily.temperature_2m_min[1]} maxTemp={response.daily.temperature_2m_max[1]} num={response.daily.time[1]} name={name.replaceAll('+', ' ')}  sunrise={response.daily.sunrise[1].slice(11)} sunset={response.daily.sunset[1].slice(11)}/>
+          <Days maxPrecipitation={response.daily.precipitation_probability_max[2]} minTemp={response.daily.temperature_2m_min[2]} maxTemp={response.daily.temperature_2m_max[2]} num={response.daily.time[2]} name={name.replaceAll('+', ' ')}  sunrise={response.daily.sunrise[2].slice(11)} sunset={response.daily.sunset[2].slice(11)}/>
+          <Days maxPrecipitation={response.daily.precipitation_probability_max[3]} minTemp={response.daily.temperature_2m_min[3]} maxTemp={response.daily.temperature_2m_max[3]} num={response.daily.time[3]} name={name.replaceAll('+', ' ')}  sunrise={response.daily.sunrise[3].slice(11)} sunset={response.daily.sunset[3].slice(11)}/>
+          <Days maxPrecipitation={response.daily.precipitation_probability_max[4]} minTemp={response.daily.temperature_2m_min[4]} maxTemp={response.daily.temperature_2m_max[4]} num={response.daily.time[4]} name={name.replaceAll('+', ' ')}  sunrise={response.daily.sunrise[4].slice(11)} sunset={response.daily.sunset[4].slice(11)}/>
+          <Days maxPrecipitation={response.daily.precipitation_probability_max[5]} minTemp={response.daily.temperature_2m_min[5]} maxTemp={response.daily.temperature_2m_max[5]} num={response.daily.time[5]} name={name.replaceAll('+', ' ')}  sunrise={response.daily.sunrise[5].slice(11)} sunset={response.daily.sunset[5].slice(11)}/>
         </div>
       </div>
     )
